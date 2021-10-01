@@ -2,6 +2,15 @@ const express = require("express")
 const app = express()
 const nodemailer = require("nodemailer")
 require("dotenv").config()
+const cors = require("cors")
+
+// create cors middleware
+const corsOptions = {
+  origin: process.env.HOST,
+  optionsSuccessStatus: 200,
+}
+
+app.use(cors(corsOptions))
 
 app.use(express.json())
 
