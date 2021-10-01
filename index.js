@@ -6,7 +6,17 @@ const cors = require("cors")
 
 // create cors middleware
 const corsOptions = {
-  origin: process.env.HOST,
+  // origin: process.env.HOST,
+  origin: "*",
+  credentials: true,
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Content-Length",
+    "X-Requested-With",
+    "Accept",
+  ],
+  methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
   optionsSuccessStatus: 200,
 }
 
@@ -33,18 +43,7 @@ app.post("/", async (req, res) => {
   const email = req.body.form_email
   console.log("jjjjjj")
 
-  await new Promise((resolve, reject) => {
-    // verify connection configuration
-    transporter.verify(function (error, success) {
-      if (error) {
-        console.log(error)
-        reject(error)
-      } else {
-        console.log("Server is ready to take our messages")
-        resolve(success)
-      }
-    })
-  })
+  // verify connection configuration
 
   var mailOptions = {
     from: process.env.MY_EMAIL,
@@ -52,16 +51,15 @@ app.post("/", async (req, res) => {
     subject: "Sending Email using Node.js",
     text: `${email} has just subscribed`,
   }
-  await new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error)
-      } else {
-        console.log("Email sent: " + info.response)
-        res.json({ success: "Thanks for the subscribe" })
-      }
-    })
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error)
+    } else {
+      console.log("Email sent: " + info.response)
+    }
   })
+  res.json({ success: "Thanks for the subscribe" })
 })
 
 app.listen(5000, () => console.log("server is running on port 5000"))
