@@ -58,11 +58,10 @@ app.post("/", async (req, res) => {
         console.log(error)
       } else {
         console.log("Email sent: " + info.response)
+        res.json({ success: "Thanks for the subscribe" })
       }
     })
   })
-  console.log("jjjjjjjjjjjjjj")
-  res.json({ success: "Thanks for the subscribe" })
 })
 
 app.listen(5000, () => console.log("server is running on port 5000"))
